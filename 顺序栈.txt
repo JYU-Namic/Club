@@ -1,0 +1,86 @@
+// 【1】预定义部分
+#include<STDIO.H>
+#include<STDLIB.H>
+#include<NEW.H>
+#include<IOSTREAM>
+// 【2】宏定义
+#define MAXSIZE 100
+#define OVERFLOW 0
+#define OK 1
+#define ERROR 0
+#define TURE 1
+#define FALSE 0
+using namespace std;
+//【3】类型定义
+typedef int SElemType;
+typedef struct 
+{
+    SElemType *base;
+    SElemType *top;
+    int stacksize;
+}SqStack;
+//【4】功能
+//（1）顺序栈的初始化
+int InitStack(SqStack &S)
+{
+    S.base=new SElemType[MAXSIZE];
+    if(!S.base)exit(OVERFLOW);
+    S.top=S.base;
+    S.stacksize=MAXSIZE;
+    return OK;
+}
+//(2)判断顺序栈是否为空
+int StackEmpty(SqStack S)
+{
+    if(S.top==S.base)
+    return OK;//栈空则返回TURE
+    else
+    return FALSE;//栈不空则返回FALSE
+}
+//(3)求顺序栈长度
+int StackLength(SqStack S)
+{
+    return (S.top-S.base);
+}
+//(4)清空顺序栈
+int ClearStack(SqStack &S)
+{
+    if(S.base)
+    {
+        S.top=S.base;
+    }
+    return OK;
+}
+//(5)销毁顺序栈
+int DestroyStack(SqStack &S)
+{
+    if(S.base)
+    {
+        delete S.base;
+        S.stacksize=0;
+        S.base=S.top=NULL;
+    }
+    return OK;
+}
+//(6)顺序栈的入栈
+int Push(SqStack &S,SElemType e)
+{
+    //<1>判断合法性
+    if(S.top-S.base==S.stacksize)
+    return ERROR;
+    //<2>入栈
+    *S.top=e;
+    S.top++;
+    return OK;
+}
+//(7)顺序栈的出栈
+int Pop(SqStack &S,SElemType &e)
+{
+    //<1>判断合法性
+    if(S.top==S.base)
+    return ERROR;
+    //<2>出栈
+    --S.top;
+    e=*S.top;
+    return OK;
+}
