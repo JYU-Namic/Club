@@ -1,6 +1,8 @@
 //KMP测试 
-#include <stdio.h>
+#include<stdio.h>
+#include<iostream>
 #define MaxSize 100
+using namespace std;
 typedef struct
 {	
 	char data[MaxSize];		//串中字符
@@ -79,20 +81,25 @@ int KMPIndex1(SqString s,SqString t)	//修正的KMP算法
 
 int main()
 {
+	// <1>定义声明
 	int j;
+	char T[MaxSize];
 	int next[MaxSize],nextval[MaxSize];
 	SqString s,t;
-	StrAssign(s,"abcabcdabcdeabcdefabcdefg");
-	StrAssign(t,"abcdeabcdefab");
+	// <3>S输入
+	StrAssign(s,"abcabcdabcd12bcdefabc34defg");
+	// <3>T输入
+	cout<<"请输入半记忆学号T:";
+	cin.getline(T,MaxSize);
+	StrAssign(t,T);
+	// <4>打印S，T串
 	printf("串s:");DispStr(s);
 	printf("串t:");DispStr(t);
+	// <5>求nextval
 	GetNext(t,next);			//由模式串t求出next值
 	GetNextval(t,nextval);		//由模式串t求出nextval值
+	// <6>输出结果
 	printf("改进的KMP算法:\n");
 	printf("t在s中的位置=%d\n",KMPIndex1(s,t));
 	return 1;
 }
-
-
-
-
