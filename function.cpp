@@ -59,9 +59,38 @@ int StatisticsRecord()
 
 }
 // (9)半记忆查找
-int KMP()
+void Get_next(Sting_T,int &next[])
 {
-
+    int i=1;
+    int j=0;
+    next[1]=0;
+    while (i<T.Length)
+    {
+        if(j==0||T.ch[i]==T.ch[j])
+        {
+            ++i;
+            ++j;
+            next[i]=j;
+        }
+        else j=next[j];
+    }
+}
+int KMP(String_S,String_T)
+{
+    int i=1;
+    int j=1;
+    while (i<S.Length&&j<T.Length)
+    {
+        if (j==0||S.ch[i]==T.ch[j])
+        {
+            i++;
+            j++;
+        }
+        else j=next[j];
+    }
+    if (j>T.Length)
+       return i-T.Length;
+    else return 0;
 }
 // (10)读取记录
 int ReadRecord()
