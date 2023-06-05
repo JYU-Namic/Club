@@ -2,26 +2,27 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<iostream>
+#include<new>
 // 【2】宏定义
 using namespace std;
 #define MAXSIZE 8
 // 【3】结构定义
 typedef char ElemType;
-typedef struct phonetype
+typedef struct
 {  
-	long int Num[MAXSIZE];//学号（最多9位数）
+	char Num[MAXSIZE];//学号（最多9位数）
     ElemType Name;//姓名
     int ClassNum;//班级
     ElemType Address;//住址
     long int Phone_Long;//手机长号
     long int Phone_Short;//手机短号
     ElemType Code;//邮箱
-}phonetype;
-typedef struct LinkList
+}EmpType;
+typedef struct node
 {
-	phonetype data;
-	struct LinkList *next;
-}LinkList;
+	EmpType data;
+	struct node *next;
+}EmpList;
 
 // 【4】功能
 // (1)创建通讯录文件
@@ -30,21 +31,29 @@ int CreatFile()
 
 }
 // (2)添加记录
-int AddRecord(LinkList *&L)
+int AddRecord(EmpList *&L)
 {
-phonetype p;
-LinkList *s;
-printf("请输入学生的学号（摁-1返回）");
-scanf("%d",&p.Num);
-if(p.Num==-1)
-return;
-printf("请分别输入学生的姓名，班级，住址，手机长号，手机短号，邮箱,期间使用回车隔开");
-scanf("%s%d%s%d%d%s",&p.Name,&p.ClassNum,&p.Address,&p.Phone_Long,&p.Phone_Short,&p.Code);
-s=(LinkList *)malloc(sizeof(LinkList));
-s->data=p;
-s->next=L->next;
-L->next=s;
-printf("添加完成！！")
+    EmpType p;
+    EmpList *s;
+    cout<<"请输入学生的学号(最多9位):";
+    cin.getline(p.Num,MAXSIZE+1);
+	cout<<"请输入学生的姓名：";
+	cin>>p.Name;
+	cout<<"班级：";
+	cin>>p.ClassNum;
+	cout<<"住址：";
+	cin>>p.Address;
+	cout<<"手机长号：";
+	cin>>p.Phone_Long;
+	cout<<"手机短号：";
+	cin>>p.Phone_Short;
+	cout<<"邮箱：";
+	cin>>p.Code;
+    s=new EmpList;
+    s->data=p;
+    s->next=L->next;
+    L->next=s;
+    cout<<"添加完成！！！";
 }
 // (3)删除记录
 int DeleteRecord()
