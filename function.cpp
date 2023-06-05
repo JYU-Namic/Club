@@ -60,39 +60,40 @@ int StatisticsRecord()
 
 }
 // (9)半记忆查找——针对Num
-void Get_next(Sting_T,int &next[])
+void GetNextval(SqString t,int nextval[])  //由模式串t求出nextval值
 {
-    int i=1;
-    int j=0;
-    next[1]=0;
-    while (i<T.Length)
-    {
-        if(j==0||T.ch[i]==T.ch[j])
-        {
-            ++i;
-            ++j;
-            next[i]=j;
-        }
-        else j=next[j];
-    }
+	int j=0,k=-1;
+	nextval[0]=-1;
+	while (j<t.length)
+	{	if (k==-1 || t.data[j]==t.data[k])
+		{	j++;k++;
+			if (t.data[j]!=t.data[k])
+				nextval[j]=k;
+			else
+				nextval[j]=nextval[k];
+		}
+		else
+			k=nextval[k];
+	}
 }
-int KMP(String_S,String_T)
+int KMPIndex1(SqString s,SqString t)	//修正的KMP算法
 {
-    int i=1;
-    int j=1;
-    while (i<S.Length&&j<T.Length)
-    {
-        if (j==0||S.ch[i]==T.ch[j])
-        {
-            i++;
-            j++;
-        }
-        else j=next[j];
-    }
-    if (j>T.Length)
-       return i-T.Length;
-    else return 0;
+	int nextval[MaxSize],i=0,j=0;
+	GetNextval(t,nextval);
+	while (i<s.length && j<t.length) 
+	{	if (j==-1 || s.data[i]==t.data[j]) 
+		{	i++;
+			j++;
+		}
+		else
+			j=nextval[j];
+	}
+	if (j>=t.length)
+		return(i-t.length);
+	else
+		return(-1);
 }
+
 // (10)读取记录
 int ReadRecord()
 {
