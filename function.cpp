@@ -7,7 +7,7 @@ using namespace std;
 #define MAXSIZE 8
 // 【3】结构定义
 typedef char ElemType;
-typedef struct Lnode
+typedef struct phonetype
 {  
 	long int Num;//学号（最多9位数）
     ElemType Name[MAXSIZE];//姓名
@@ -16,8 +16,13 @@ typedef struct Lnode
     long int Phone_Long;//手机长号
     long int Phone_Short;//手机短号
     ElemType Code[20];//邮箱
-    struct Lnode *next;//next域指针 
-}*LinkList;
+}phonetype;
+typedef struct LinkList
+{
+	phonetype data;
+	struct LinkList *next;
+}LinkList;
+
 // 【4】功能
 // (1)创建通讯录文件
 int CreatFile()
@@ -27,15 +32,19 @@ int CreatFile()
 // (2)添加记录
 int AddRecord(LinkList *&L)
 {
-LinkList p;
+phonetype p;
 LinkList *s;
 printf("请输入学生的学号（摁-1返回）");
-scanf("%d",&p->Num);
-if(p->Num==-1)
+scanf("%d",&p.Num);
+if(p.Num==-1)
 return;
 printf("请分别输入学生的姓名，班级，住址，手机长号，手机短号，邮箱,期间使用回车隔开");
-scanf("%s%d%s%d%d%s",&p->Name,&p->ClassNum,&p->Address,&p->Phone_Long,&p->Phone_Short,&p->Code)
-s=()
+scanf("%s%d%s%d%d%s",&p.Name,&p.ClassNum,&p.Address,&p.Phone_Long,&p.Phone_Short,&p.Code);
+s=(LinkList *)malloc(sizeof(LinkList));
+s->data=p;
+s->next=L->next;
+L->next=s;
+printf("添加完成！！")
 }
 // (3)删除记录
 int DeleteRecord()
