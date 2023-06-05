@@ -4,19 +4,20 @@
 #include<iostream>
 // 【2】宏定义
 using namespace std;
+#define MAXSIZE 8
 // 【3】结构定义
 typedef char ElemType;
 typedef struct Lnode
 {
     ElemType Name;//姓名
-    ElemType ClassNum;//学号
-    ElemType Num;//学号
+    ElemType ClassNum;//班级
+    int Num[MAXSIZE];//学号（最多9位数）
     ElemType Address;//住址
     ElemType Phone_Long;//手机长号
     ElemType Phone_Short;//手机短号
     ElemType Code;//邮箱
     struct Lnode *next;//next域指针 
-};
+}LinkList;
 // 【4】功能
 // (1)创建通讯录文件
 int CreatFile()
@@ -58,7 +59,7 @@ int StatisticsRecord()
 {
 
 }
-// (9)半记忆查找
+// (9)半记忆查找——针对Num
 void Get_next(Sting_T,int &next[])
 {
     int i=1;
