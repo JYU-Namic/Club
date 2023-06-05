@@ -5,9 +5,16 @@
 // 【2】宏定义
 using namespace std;
 // 【3】结构定义
+typedef char ElemType;
 typedef struct Lnode
 {
-    
+    ElemType Name;//姓名
+    ElemType ClassNum;//学号
+    ElemType Num;//学号
+    ElemType Address;//住址
+    ElemType Phone_Long;//手机长号
+    ElemType Phone_Short;//手机短号
+    ElemType Code;//邮箱
 };
 // 【4】功能
 // (1)创建通讯录文件
