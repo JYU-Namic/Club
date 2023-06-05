@@ -28,7 +28,7 @@ typedef struct node
 // (1)创建通讯录文件
 int CreatFile()
 {
-
+	
 }
 // (2)添加记录
 int AddRecord(EmpList *&L)
