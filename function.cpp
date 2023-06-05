@@ -17,7 +17,7 @@ typedef struct Lnode
     ElemType Phone_Short;//手机短号
     ElemType Code;//邮箱
     struct Lnode *next;//next域指针 
-}LinkList;
+}*LinkList;
 // 【4】功能
 // (1)创建通讯录文件
 int CreatFile()

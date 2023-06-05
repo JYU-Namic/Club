@@ -88,23 +88,11 @@ int main()
 	printf("串t:");DispStr(t);
 	GetNext(t,next);			//由模式串t求出next值
 	GetNextval(t,nextval);		//由模式串t求出nextval值
-	printf("    j   ");
-	for (j=0;j<t.length;j++)
-		printf("%4d",j);
-	printf("\n");
-	printf(" t[j]   ");
-	for (j=0;j<t.length;j++)
-		printf("%4c",t.data[j]);
-	printf("\n");
-	printf(" next   ");
-	for (j=0;j<t.length;j++)
-		printf("%4d",next[j]);
-	printf("\n");
-	printf(" nextval");
-	for (j=0;j<t.length;j++)
-		printf("%4d",nextval[j]);
-	printf("\n");
 	printf("改进的KMP算法:\n");
-	printf("  t在s中的位置=%d\n",KMPIndex1(s,t));
+	printf("t在s中的位置=%d\n",KMPIndex1(s,t));
 	return 1;
 }
+
+
+
+
