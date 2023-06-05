@@ -9,13 +9,13 @@ using namespace std;
 typedef char ElemType;
 typedef struct phonetype
 {  
-	long int Num;//学号（最多9位数）
-    ElemType Name[MAXSIZE];//姓名
+	long int Num[MAXSIZE];//学号（最多9位数）
+    ElemType Name;//姓名
     int ClassNum;//班级
     ElemType Address;//住址
     long int Phone_Long;//手机长号
     long int Phone_Short;//手机短号
-    ElemType Code[20];//邮箱
+    ElemType Code;//邮箱
 }phonetype;
 typedef struct LinkList
 {
