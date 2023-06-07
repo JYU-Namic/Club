@@ -25,11 +25,36 @@ typedef struct node
 }EmpList;
 
 // 【4】功能
-// (1)创建通讯录文件
-int CreatFile()
+// (1)读取记录：读emp.dat文件建立职工单键表L
+void ReadFile(EmpList *&L)		
 {
-	
+	FILE *fp;
+	EmpType emp;
+	EmpList *p,*r;
+	int n=0;
+	L=(EmpList *)malloc(sizeof(EmpList));	//建立头结点
+	r=L;
+	if ((fp=fopen("emp.dat","rb"))==NULL) //不存在emp.dat文件
+	{	
+		 if ((fp=fopen("emp.dat","wb"))==NULL) 
+			 printf("  提示:不能创建emp.dat文件\n");
+	}
+	else		//若存在emp.dat文件
+	{
+		while (fread(&emp,sizeof(EmpType),1,fp)==1)
+		{	//采用尾插法建立单链表L
+			p=(EmpList *)malloc(sizeof(EmpList));
+			p->data=emp;
+			r->next=p;
+			r=p;
+			n++;
+		}
+	}
+	r->next=NULL;
+	printf("  提示:职工单键表L建立完毕,有%d个记录\n",n);
+	fclose(fp);
 }
+
 // (2)添加记录
 int AddRecord(EmpList *&L)
 {
@@ -86,42 +111,44 @@ int StatisticsRecord()
 
 }
 // (9)半记忆查找——针对Num
-void GetNextval(SqString t,int nextval[])  //由模式串t求出nextval值
+void GetNextval()  
 {
-	int j=0,k=-1;
-	nextval[0]=-1;
-	while (j<t.length)
-	{	if (k==-1 || t.data[j]==t.data[k])
-		{	j++;k++;
-			if (t.data[j]!=t.data[k])
-				nextval[j]=k;
-			else
-				nextval[j]=nextval[k];
-		}
-		else
-			k=nextval[k];
-	}
+
 }
-int KMPIndex1(SqString s,SqString t)	//修正的KMP算法
+// (10)写入记录：//将单链表数据存入数据文件
+void SaveFile(EmpList *L)	
 {
-	int nextval[MaxSize],i=0,j=0;
-	GetNextval(t,nextval);
-	while (i<s.length && j<t.length) 
-	{	if (j==-1 || s.data[i]==t.data[j]) 
-		{	i++;
-			j++;
-		}
-		else
-			j=nextval[j];
+	EmpList *p=L->next;
+	int n=0;
+	FILE *fp;
+	if ((fp=fopen("emp.dat","wb"))==NULL) 
+	{	
+		printf("  提示:不能创建文件emp.dat\n");
+		return;
 	}
-	if (j>=t.length)
-		return(i-t.length);
+	while (p!=NULL)
+	{
+		fwrite(&p->data,sizeof(EmpType),1,fp);
+		p=p->next;
+		n++;
+	}
+	fclose(fp);
+	DestroyEmp(L);				//释放职工单链表L
+	if (n>0)
+		printf("  提示:%d个职工记录写入emp.dat文件\n",n);
 	else
-		return(-1);
+		printf("  提示:没有任何职工记录写入emp.dat文件\n");
+
 }
-
-// (10)读取记录
-int ReadRecord()
+// (11)摧毁链表
+void DestroyEmp(EmpList *&L)	//释放职工单链表L
 {
-
+	EmpList *pre=L,*p=pre->next;
+	while (p!=NULL)
+	{
+		free(pre);
+		pre=p;
+		p=p->next;
+	}
+	free(pre);
 }

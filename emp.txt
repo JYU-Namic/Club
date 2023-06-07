@@ -1,0 +1,7 @@
+20180101 张三 3班 北京 1234567 123 zhangsan@163.com 
+20180202 李四 2班 上海 2345671 234 lisi@qq.com
+20180303 王五 1班 广州 3456783 345 wangwu@126.com 
+20200101 Mary 1Grade London +447911123456 +44 mary@example.com
+20210101 Tom 2Grade Paris +33123456789 +33 tom@example.com
+20190101 Mike Class1 NewYork 1924834567 192 mike@gmail.com
+20180102 Jack Class2 Shenzhen 1362345671 136 jack@foxmail.com
