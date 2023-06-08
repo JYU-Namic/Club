@@ -152,3 +152,4 @@ void DestroyEmp(EmpList *&L)	//释放职工单链表L
 	}
 	free(pre);
 }
+

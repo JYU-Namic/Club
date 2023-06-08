@@ -1,9 +1,8 @@
-//文件名:exp2-11.cpp
 #include <stdio.h>
 #include <malloc.h>
 typedef struct
 {
-	int no;						//职工号
+	int no;						//职工号（学号）
 	char name[10];				//姓名
 	int depno;					//部门号
 	float salary;				//工资数
@@ -96,7 +95,7 @@ void InputEmp(EmpList *&L)	//添加一个职工记录
 	printf("  >>输入职工号(-1返回):");
 	scanf("%d",&p.no);
 	if (p.no==-1) return;
-	printf("  >>输入姓名 部门号 工资:");
+	printf("  >>输入姓名 部门号 工资(中间用空格隔开):");
 	scanf("%s%d%f",&p.name,&p.depno,&p.salary);
 	s=(EmpList *)malloc(sizeof(EmpList));
 	s->data=p;
@@ -193,7 +192,7 @@ void DispEmp(EmpList *L)	//输出所有职工记录
 		printf("  提示:没有任何职工记录\n");
 	else
 	{
-		printf("    职工号  姓名  部门号       工资\n");
+		printf("    职工号\t姓名\t部门号\t工资\n");
 		printf("   ----------------------------------\n");
 		while (p!=NULL)
 		{
@@ -211,10 +210,10 @@ int main()
 	ReadFile(L);
 	do
 	{	
-		printf("----------------------------------------------------------\n");
+		printf("[----------------------------------------------------------\n");
 		printf("1:添加      2:显示      3:按职工号排序\n4:按部门号排序       5:按工资数排序         ");
 		printf("6:删除\n9:全删         0:退出 \n");
-		printf("----------------------------------------------------------\n请选择:");
+		printf("----------------------------------------------------------]\n请选择:");
 		scanf("%d",&sel);
 		switch(sel)
 		{
