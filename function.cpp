@@ -15,7 +15,7 @@ typedef struct
     int ClassNum;//班级
     ElemType Address;//住址
     long int Phone_Long;//手机长号
-    long int Phone_Short;//手机短号
+    // long int Phone_Short;//手机短号
     ElemType Code;//邮箱
 }EmpType;
 typedef struct node
