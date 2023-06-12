@@ -2,7 +2,7 @@
 #include <malloc.h>
 typedef struct
 {
-	int no;						//职工号（学号）
+	int no;						//职工号
 	char name[10];				//姓名
 	int depno;					//部门号
 	float salary;				//工资数
