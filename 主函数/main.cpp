@@ -216,6 +216,11 @@ void Change(EmpList *&L)    //修改记录
 
 }
 
+//需添加函数
+void KMP(EmpList *L)        //半记忆查找
+{
+
+}
 
 int main()
 {
@@ -226,7 +231,7 @@ int main()
 	do
 	{	
 		printf("[---------------------\n");
-		printf("\t1:添加记录\n\t2:显示记录\n\t3:按职学号排序\n\t4:按班级排序\n\t5:按电话排序\n\t6:删除记录\n\t9:清空记录\n\t10:查找记录(还没有函数)\n\t11:修改记录(还没有函数)\n\t0:保存并退出\n");
+		printf("\t1:添加记录\n\t2:显示记录\n\t3:按职学号排序\n\t4:按班级排序\n\t5:按电话排序\n\t6:删除记录\n\t9:清空记录\n\t10:查找记录(还没有函数)\n\t11:修改记录(还没有函数)\n\t12:半记忆查找\n\t0:保存并退出\n");
 		printf("----------------------]\n请选择:");
 		scanf("%d",&sel);
 		switch(sel)
@@ -257,6 +262,9 @@ int main()
 			break;
 		case 11:
 			Change(L);
+			break;
+		case 12:
+			KMP(L);
 			break;
 		}
 	} while (sel!=0);
