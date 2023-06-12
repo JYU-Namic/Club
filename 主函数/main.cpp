@@ -204,6 +204,19 @@ void DispEmp(EmpList *L)	//输出所有联系人记录
 		printf("   -------------------------------------------------------------------------------\n");
 	}
 }
+
+//需添加函数
+void Find(EmpList *&L)     //查找记录
+{
+
+}
+
+void Change(EmpList *&L)    //修改记录
+{
+
+}
+
+
 int main()
 {
 	EmpList *L;
@@ -238,6 +251,12 @@ int main()
 			break;
 		case 6:
 			DelEmp(L);
+			break;
+		case 10:
+			Find(L);
+			break;
+		case 11:
+			Change(L);
 			break;
 		}
 	} while (sel!=0);
