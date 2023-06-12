@@ -97,7 +97,7 @@ void InputEmp(EmpList *&L)	//添加一个职工记录
 	printf("  >>输入学号(-1返回):");
 	scanf("%d",&p.num);
 	if (p.num==-1) return;
-	printf("  >>输入姓名 班级 电话 地址 邮箱(中间用空格隔开):");
+	printf（回车“ >>输入姓名 班级 电话 地址 邮箱（中间用h隔开）：hui'c);
 	scanf("%s%d%ld%s%s",&p.name,&p.classes,&p.phone,&p.address,&p.code);
 	s=(EmpList *)malloc(sizeof(EmpList));
 	s->data=p;
