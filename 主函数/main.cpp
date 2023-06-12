@@ -4,9 +4,11 @@ typedef struct
 {
 	int num;						//学号
 	char name[10];				//姓名
-	int depno;					//部门号
-	float salary;				//工资数
-} EmpType;						//职工类型
+	int classes;					//班级
+	int phone;				//电话
+    char address[20];               //地址
+    char code[20];                 //邮箱
+} EmpType;						//联系人
 typedef struct node
 {
 	EmpType data;				//存放职工信息
@@ -92,11 +94,11 @@ void InputEmp(EmpList *&L)	//添加一个职工记录
 {
 	EmpType p;
 	EmpList *s;
-	printf("  >>输入职工号(-1返回):");
-	scanf("%d",&p.no);
-	if (p.no==-1) return;
-	printf("  >>输入姓名 部门号 工资(中间用空格隔开):");
-	scanf("%s%d%f",&p.name,&p.depno,&p.salary);
+	printf("  >>输入学号(-1返回):");
+	scanf("%d",&p.num);
+	if (p.num==-1) return;
+	printf("  >>输入姓名 班级 电话 地址 邮箱(中间用空格隔开):");
+	scanf("%s%d%d%s%s",&p.name,&p.classes,&p.phone,&p.address,&p.code);
 	s=(EmpList *)malloc(sizeof(EmpList));
 	s->data=p;
 	s->next=L->next;		//采用头插法插入结点s
@@ -107,11 +109,11 @@ void InputEmp(EmpList *&L)	//添加一个职工记录
 void DelEmp(EmpList *&L)	//删除一个职工记录
 {
 	EmpList *pre=L,*p=L->next;
-	int no;
+	int num;
 	printf("  >>输入职工号(-1返回):");
-	scanf("%d",&no);
-	if (no==-1) return;
-	while (p!=NULL && p->data.no!=no)
+	scanf("%d",&num);
+	if (num==-1) return;
+	while (p!=NULL && p->data.num!=num)
 	{
 		pre=p;
 		p=p->next;
@@ -136,7 +138,7 @@ void Sortno(EmpList *&L)	//采用直接插入法单链表L按no递增有序排�
 		{
 			q=p->next;
 			pre=L;
-			while (pre->next!=NULL && pre->next->data.no<p->data.no)
+			while (pre->next!=NULL && pre->next->data.num<p->data.num)
 				pre=pre->next;
 			p->next=pre->next;
 			pre->next=p;
@@ -156,7 +158,7 @@ void Sortdepno(EmpList *&L) //采用直接插入法单链表L按depno递增有�
 		{
 			q=p->next;
 			pre=L;
-			while (pre->next!=NULL && pre->next->data.depno<p->data.depno)
+			while (pre->next!=NULL && pre->next->data.classes<p->data.classes)
 				pre=pre->next;
 			p->next=pre->next;
 			pre->next=p;
@@ -176,7 +178,7 @@ void Sortsalary(EmpList *&L) //采用直接插入法单链表L按salary递增有
 		{
 			q=p->next;
 			pre=L;
-			while (pre->next!=NULL && pre->next->data.salary<p->data.salary)
+			while (pre->next!=NULL && pre->next->data.phone<p->data.phone)
 				pre=pre->next;
 			p->next=pre->next;
 			pre->next=p;
@@ -192,14 +194,14 @@ void DispEmp(EmpList *L)	//输出所有职工记录
 		printf("  提示:没有任何职工记录\n");
 	else
 	{
-		printf("    职工号\t姓名\t部门号\t工资\n");
-		printf("   ----------------------------------\n");
+		printf("    学号\t姓名\t班级\t电话\t地址\t邮箱\n");
+		printf("   ------------------------------------------------\n");
 		while (p!=NULL)
 		{
-			printf("  %3d%10s    %-8d%7.2f\n",p->data.no,p->data.name,p->data.depno,p->data.salary);
+			printf("  %d\t%-10s\t%d\t%d\t%-s\t%-s\n",p->data.num,p->data.name,p->data.classes,p->data.phone,p->data.address,p->data.code);
 			p=p->next; 
 		}
-		printf("   ----------------------------------\n");
+		printf("   ------------------------------------------------\n");
 	}
 }
 int main()
