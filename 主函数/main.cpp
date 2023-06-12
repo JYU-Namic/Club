@@ -5,7 +5,7 @@ typedef struct
 	int num;						//学号
 	char name[10];				//姓名
 	int classes;					//班级
-	int phone;				//电话
+	long int phone;				//电话
     char address[20];               //地址
     char code[20];                 //邮箱
 } EmpType;						//联系人
@@ -98,7 +98,7 @@ void InputEmp(EmpList *&L)	//添加一个职工记录
 	scanf("%d",&p.num);
 	if (p.num==-1) return;
 	printf("  >>输入姓名 班级 电话 地址 邮箱(中间用空格隔开):");
-	scanf("%s%d%d%s%s",&p.name,&p.classes,&p.phone,&p.address,&p.code);
+	scanf("%s%d%ld%s%s",&p.name,&p.classes,&p.phone,&p.address,&p.code);
 	s=(EmpList *)malloc(sizeof(EmpList));
 	s->data=p;
 	s->next=L->next;		//采用头插法插入结点s
@@ -194,11 +194,11 @@ void DispEmp(EmpList *L)	//输出所有职工记录
 		printf("  提示:没有任何职工记录\n");
 	else
 	{
-		printf("    学号\t姓名\t班级\t电话\t地址\t邮箱\n");
+		printf("    学号\t姓名\t班级\t电话\t\t地址\t\t邮箱\n");
 		printf("   ------------------------------------------------\n");
 		while (p!=NULL)
 		{
-			printf("  %d\t%-10s\t%d\t%d\t%-s\t%-s\n",p->data.num,p->data.name,p->data.classes,p->data.phone,p->data.address,p->data.code);
+			printf("  %d\t%-10s%d  %ld\t%-s\t%-s\n",p->data.num,p->data.name,p->data.classes,p->data.phone,p->data.address,p->data.code);
 			p=p->next; 
 		}
 		printf("   ------------------------------------------------\n");
