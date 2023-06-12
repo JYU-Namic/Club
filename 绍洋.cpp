@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include<iostream>
+#include<cstdio>
 #define MaxSize 20
 using namespace std;
 typedef struct
@@ -293,32 +294,33 @@ int KMPIndex1(SqString s,SqString t)	//修正的KMP算法
 		return(-1);
 }
 
-void KMP(EmpList *L)
+void KMP(EmpList *L,char *T)
 {
     // <1>定义声明
 	int j;
-	char T[MaxSize];
 	char S[MaxSize];
 	int next[MaxSize],nextval[MaxSize];
 	SqString s,t;
-	// <3>S输入
-    
-	sprintf(S,"%ld",L->data.phone);
-	StrAssign(s,S);
-	// <3>T输入
-    cout<<L->data.phone<<endl;
-	cout<<"请输入半记忆学号T:"<<endl;
-	cin.getline(T,MaxSize);
+    // <2>T输入
 	StrAssign(t,T);
-	// <4>打印S，T串
-	printf("串s:");DispStr(s);
-	printf("串t:");DispStr(t);
-	// <5>求nextval
-	GetNext(t,next);			//由模式串t求出next值
-	GetNextval(t,nextval);		//由模式串t求出nextval值
-	// <6>输出结果
-	printf("改进的KMP算法:\n");
-	printf("t在s中的位置=%d\n",KMPIndex1(s,t));
+	// <3>S输入
+    EmpList *p=L->next;
+	while (p!=NULL)
+	{
+        sprintf(S,"%ld",p->data.phone);
+	    StrAssign(s,S);
+        // <4>打印S，T串
+	    printf("\n串s:");DispStr(s);
+	    printf("串t:");DispStr(t);
+	    // <5>求nextval
+	    GetNext(t,next);			//由模式串t求出next值
+	    GetNextval(t,nextval);		//由模式串t求出nextval值
+	    // <6>输出结果
+	    printf("\n改进的KMP算法:\n");
+	    printf("t在s中的位置=%d\n",KMPIndex1(s,t));
+        p=p->next;
+	}
+	
 }
 // 以上属半记忆查找
 
@@ -365,7 +367,11 @@ int main()
 			Change(L);
 			break;
 		case 12:
-			KMP(L);
+			char T[MaxSize];
+            int num;
+            cout<<"请输入半记忆电话：";
+            cin>>T;
+            KMP(L,T);
 			break;
 		}
 	} while (sel!=0);
