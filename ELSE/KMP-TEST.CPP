@@ -1,7 +1,7 @@
 //KMP测试 
 #include<stdio.h>
 #include<iostream>
-#define MaxSize 100
+#define MaxSize 20
 using namespace std;
 typedef struct
 {	
@@ -84,10 +84,13 @@ int main()
 	// <1>定义声明
 	int j;
 	char T[MaxSize];
+	char S[MaxSize];
 	int next[MaxSize],nextval[MaxSize];
 	SqString s,t;
 	// <3>S输入
-	StrAssign(s,"abcabcdabcd12bcdefabc34defg");
+	long int phone={17820382334};
+	sprintf(S,"%ld",phone);
+	StrAssign(s,S);
 	// <3>T输入
 	cout<<"请输入半记忆学号T:";
 	cin.getline(T,MaxSize);
