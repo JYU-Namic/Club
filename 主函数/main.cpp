@@ -3,18 +3,18 @@
 typedef struct
 {
 	int num;						//学号
-	char name[10];				//姓名
+	char name[10];				    //姓名
 	int classes;					//班级
-	long int phone;				//电话
+	long int phone;				    //电话
     char address[20];               //地址
-    char code[20];                 //邮箱
-} EmpType;						//联系人
+    char code[20];                  //邮箱
+} EmpType;						    //联系人
 typedef struct node
 {
-	EmpType data;				//存放职工信息
+	EmpType data;				//存放通讯信息
 	struct node *next;			//指向下一个结点的指针
-}  EmpList;						//职工单链表结点类型
-void DestroyEmp(EmpList *&L)	//释放职工单链表L
+}  EmpList;						//联系人结点类型
+void DestroyEmp(EmpList *&L)	//释放联系人单链表L
 {
 	EmpList *pre=L,*p=pre->next;
 	while (p!=NULL)
@@ -25,21 +25,21 @@ void DestroyEmp(EmpList *&L)	//释放职工单链表L
 	}
 	free(pre);
 }
-void DelAll(EmpList *&L)		//删除职工文件中全部记录
+void DelAll(EmpList *&L)		//删除联系人文件中全部记录
 {
 	FILE *fp;
 	if ((fp=fopen("emp.dat","wb"))==NULL)	//重写清空emp.dat文件
 	{	
-		printf("  提示:不能打开职工文件\n");
+		printf("  提示:不能打开联系人文件\n");
 		return;
 	}
 	fclose(fp);
-	DestroyEmp(L);						//释放职工单链表L
+	DestroyEmp(L);						//释放联系人单链表L
 	L=(EmpList *)malloc(sizeof(EmpList));	
-	L->next=NULL;						//建立一个空的职工单链表L
-	printf("  提示:职工数据清除完毕\n");
+	L->next=NULL;						//建立一个空的联系人单链表L
+	printf("  提示:联系人记录清除完毕\n");
 }
-void ReadFile(EmpList *&L)		//读emp.dat文件建立职工单键表L
+void ReadFile(EmpList *&L)		//读emp.dat文件建立联系人单键表L
 {
 	FILE *fp;
 	EmpType emp;
@@ -64,10 +64,10 @@ void ReadFile(EmpList *&L)		//读emp.dat文件建立职工单键表L
 		}
 	}
 	r->next=NULL;
-	printf("  提示:职工单键表L建立完毕,有%d个记录\n",n);
+	printf("  提示:联系人单键表L建立完毕,有%d个记录\n",n);
 	fclose(fp);
 }
-void SaveFile(EmpList *L)	//将职工单链表数据存入数据文件
+void SaveFile(EmpList *L)	//将联系人单链表数据存入数据文件
 {
 	EmpList *p=L->next;
 	int n=0;
@@ -84,33 +84,33 @@ void SaveFile(EmpList *L)	//将职工单链表数据存入数据文件
 		n++;
 	}
 	fclose(fp);
-	DestroyEmp(L);				//释放职工单链表L
+	DestroyEmp(L);				//释放联系人单链表L
 	if (n>0)
-		printf("  提示:%d个职工记录写入emp.dat文件\n",n);
+		printf("  提示:%d个联系人记录写入emp.dat文件\n",n);
 	else
-		printf("  提示:没有任何职工记录写入emp.dat文件\n");
+		printf("  提示:没有任何联系人记录写入emp.dat文件!\n");
 }
-void InputEmp(EmpList *&L)	//添加一个职工记录
+void InputEmp(EmpList *&L)	//添加一个联系人记录
 {
 	EmpType p;
 	EmpList *s;
 	printf("  >>输入学号(-1返回):");
 	scanf("%d",&p.num);
 	if (p.num==-1) return;
-	printf（回车“ >>输入姓名 班级 电话 地址 邮箱（中间用h隔开）：hui'c);
+	printf("  >>输入姓名 班级 电话 地址 邮箱(中间用空格隔开):");
 	scanf("%s%d%ld%s%s",&p.name,&p.classes,&p.phone,&p.address,&p.code);
 	s=(EmpList *)malloc(sizeof(EmpList));
 	s->data=p;
 	s->next=L->next;		//采用头插法插入结点s
 	L->next=s;
-	printf("  提示:添加成功\n");
+	printf("  提示:添加成功!\n");
 }
 
 void DelEmp(EmpList *&L)	//删除一个职工记录
 {
 	EmpList *pre=L,*p=L->next;
 	int num;
-	printf("  >>输入职工号(-1返回):");
+	printf("  >>输入学号(-1返回):");
 	scanf("%d",&num);
 	if (num==-1) return;
 	while (p!=NULL && p->data.num!=num)
@@ -119,15 +119,15 @@ void DelEmp(EmpList *&L)	//删除一个职工记录
 		p=p->next;
 	}
 	if (p==NULL)
-		printf("  提示:指定的职工记录不存在\n");
+		printf("  提示:指定的联系人记录不存在！\n");
 	else
 	{
 		pre->next=p->next;
 		free(p);
-		printf("  提示:删除成功\n");
+		printf("  提示:删除成功！\n");
 	}
 }
-void Sortno(EmpList *&L)	//采用直接插入法单链表L按no递增有序排序
+void Sortno(EmpList *&L)	//采用直接插入法单链表L按学号递增有序排序
 {
 	EmpList *p,*pre,*q;
 	p=L->next->next;
@@ -145,9 +145,9 @@ void Sortno(EmpList *&L)	//采用直接插入法单链表L按no递增有序排�
 			p=q;
 		}
 	}
-	printf("  提示:按no递增排序完毕\n");
+	printf("  提示:按学号递增排序完毕！\n");
 }
-void Sortdepno(EmpList *&L) //采用直接插入法单链表L按depno递增有序排序
+void Sortdepno(EmpList *&L) //采用直接插入法单链表L按班级递增有序排序
 {
 	EmpList *p,*pre,*q;
 	p=L->next->next;
@@ -165,9 +165,9 @@ void Sortdepno(EmpList *&L) //采用直接插入法单链表L按depno递增有�
 			p=q;
 		}
 	}
-	printf("  提示:按depno递增排序完毕\n");
+	printf("  提示:按班级递增排序完毕\n");
 }
-void Sortsalary(EmpList *&L) //采用直接插入法单链表L按salary递增有序排序
+void Sortsalary(EmpList *&L) //采用直接插入法单链表L按电话递增有序排序
 {
 	EmpList *p,*pre,*q;
 	p=L->next->next;
@@ -185,13 +185,13 @@ void Sortsalary(EmpList *&L) //采用直接插入法单链表L按salary递增有
 			p=q;
 		}
 	}
-	printf("  提示:按salary递增排序完毕\n");
+	printf("  提示:按电话递增排序完毕\n");
 }
-void DispEmp(EmpList *L)	//输出所有职工记录
+void DispEmp(EmpList *L)	//输出所有联系人记录
 {
 	EmpList *p=L->next;
 	if (p==NULL)
-		printf("  提示:没有任何职工记录\n");
+		printf("  提示:没有任何联系人记录！\n");
 	else
 	{
 		printf("    学号\t姓名\t班级\t电话\t\t地址\t\t邮箱\n");
@@ -208,14 +208,13 @@ int main()
 {
 	EmpList *L;
 	int sel;
-	printf("由emp.dat文件建立职工单键表L\n");
+	printf("由emp.dat文件建立联系人单键表L\n");
 	ReadFile(L);
 	do
 	{	
-		printf("[----------------------------------------------------------\n");
-		printf("1:添加      2:显示      3:按职工号排序\n4:按部门号排序       5:按工资数排序         ");
-		printf("6:删除\n9:全删         0:退出 \n");
-		printf("----------------------------------------------------------]\n请选择:");
+		printf("[---------------------\n");
+		printf("\t1:添加\n\t2:显示\n\t3:按职工号排序\n\t4:按部门号排序\n\t5:按工资数排序\n\t6:删除\n\t9:全删\n\t0:退出\n");
+		printf("----------------------]\n请选择:");
 		scanf("%d",&sel);
 		switch(sel)
 		{
