@@ -198,7 +198,7 @@ void Sortsalary(EmpList *&L) //采用直接插入法单链表L按电话递增有
 	}
 	printf("  提示:按电话递增排序完毕\n");
 }
-void DispEmp(EmpList *L)	//输出所有联系人记录
+long int DispEmp(EmpList *L)	//输出所有联系人记录
 {
 	EmpList *p=L->next;
 	if (p==NULL)
@@ -280,13 +280,17 @@ void StrAssign(SqString &s,char cstr[])	//字符串常量赋给串s
 }
 
 
-void DispStr(SqString s)	//输出串s
+long int DispStr(SqString s)    //返回串s的值 
 {
-	if (s.length>0)
-	{	for (int i=0;i<s.length;i++)
-			printf("%c",s.data[i]);
-		printf("\n");
-	}
+    long int value = 0;
+    if (s.length>0)
+    {    
+        for (int i=0;i<s.length;i++)
+        {
+            value = value*10 + s.data[i] - '0';  //计算字符串对应的整数值
+        }
+    }
+    return value;  //返回整数值
 }
 
 
@@ -338,7 +342,8 @@ int KMPIndex1(SqString s,SqString t)	//修正的KMP算法
 		return(-1);
 }
 
-void KMP(EmpList *L,char *T)
+
+int KMP(EmpList *L,char *T)
 {
     // <1>定义声明
 	cout<<endl;
@@ -359,13 +364,18 @@ void KMP(EmpList *L,char *T)
 	    GetNextval(t,nextval);		//由模式串t求出nextval值
 	    // <6>输出结果
 		if(KMPIndex1(s,t)!=-1)
-		    DispStr(s);
-        p=p->next;
+		{
+		    if(p->data.phone==DispStr(s))
+		    {
+			    printf("  %d\t%-10s%d  %ld\t%-s\t%-s\n",p->data.num,p->data.name,p->data.classes,p->data.phone,p->data.address,p->data.code);
+		    }
+		}
+		p=p->next;
 	}
 }
+
+
 // 以上属半记忆查找
-
-
 int main()
 {
 	EmpList *L;
