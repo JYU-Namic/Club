@@ -2,6 +2,7 @@
 #include <malloc.h>
 #include<iostream>
 #include<cstdio>
+#include <string.h>
 #define MaxSize 20
 using namespace std;
 typedef struct
@@ -218,7 +219,50 @@ void DispEmp(EmpList *L)	//输出所有联系人记录
 //需添加函数
 void Find(EmpList *&L)     //查找记录
 {
-
+	
+    EmpList *pre=L,*p1=L->next;
+    printf("请输入你要查找的方式，1按学号查找，2按姓名查找。输入-1返回\n");
+    int bb;
+    scanf("%d",&bb);
+    if(bb==-1) return;
+    else if(bb==1)
+    {
+        long int num;
+        printf("  >>输入需要查找的学生号:");
+        scanf("%ld",&num);
+        while (p1!=NULL&&p1->data.num!=num)
+        {
+           pre=p1;
+           p1=p1->next;
+        }
+        if (p1==NULL)
+        {
+            printf("该学生不存在");
+            return;
+        }
+        else
+        printf("%ld\t%-10s%d  %ld\t%-s\t%-s\n",p1->data.num,p1->data.name,p1->data.classes,p1->data.phone,p1->data.address,p1->data.code);
+        return;
+    }
+    else if (bb==2);
+    {
+      char name[10];
+      printf("请输入要查找学生的名字\n");
+      scanf("%s",&name);
+      while (p1!=NULL&&strcmp(p1->data.name,name)!=0)
+      {
+        pre=p1;
+        p1=p1->next;
+      }
+      if (p1==NULL)
+      {
+        printf("未查找到该学生");
+        return;
+      }
+      else
+      printf("%ld\t%-10s%d  %ld\t%-s\t%-s\n",p1->data.num,p1->data.name,p1->data.classes,p1->data.phone,p1->data.address,p1->data.code);
+      return;
+    }
 }
 
 void Change(EmpList *&L)    //修改记录
@@ -331,7 +375,7 @@ int main()
 	do
 	{	
 		printf("[---------------------\n");
-		printf("\t1:添加记录\n\t2:显示记录\n\t3:按职学号排序\n\t4:按班级排序\n\t5:按电话排序\n\t6:删除记录\n\t9:清空记录\n\t10:查找记录(还没有函数)\n\t11:修改记录(还没有函数)\n\t12:半记忆查找\n\t0:保存并退出\n");
+		printf("\t1:添加记录\n\t2:显示记录\n\t3:按职学号排序\n\t4:按班级排序\n\t5:按电话排序\n\t6:删除记录\n\t9:清空记录\n\t10:查找记录\n\t11:修改记录(还没有函数)\n\t12:半记忆查找\n\t0:保存并退出\n");
 		printf("----------------------]\n请选择:");
 		scanf("%d",&sel);
 		switch(sel)
