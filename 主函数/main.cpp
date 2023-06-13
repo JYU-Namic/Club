@@ -105,10 +105,13 @@ void InputEmp(EmpList *&L)	//添加一个联系人记录
 {
 	EmpType p;
 	EmpList *s;
-	printf("  >>输入学号(-1返回):");
-	scanf("%d",&p.num);
-	if (p.num==-1) return;
-	printf("  >>输入姓名 班级 电话 地址 邮箱(中间用空格隔开):");
+	printf(">>输入学号(-1返回, 0代表没有学号):");
+	int A;
+	cin>>A;
+	if(A==-1)   return;
+	else if(A==0)   p.num=888888888;    //888888888是为了格式好看:）
+	else p.num=A;
+	printf(">>输入姓名 班级 电话 地址 邮箱(输入完毕摁ENTER回车):\n");
 	scanf("%s%d%ld%s%s",&p.name,&p.classes,&p.phone,&p.address,&p.code);
 	s=(EmpList *)malloc(sizeof(EmpList));
 	s->data=p;
@@ -121,7 +124,7 @@ void DelEmp(EmpList *&L)	//删除一个职工记录
 {
 	EmpList *pre=L,*p=L->next;
 	int num;
-	printf("  >>输入学号(-1返回):");
+	printf(">>输入学号(-1返回):");
 	scanf("%d",&num);
 	if (num==-1) return;
 	while (p!=NULL && p->data.num!=num)
@@ -130,12 +133,12 @@ void DelEmp(EmpList *&L)	//删除一个职工记录
 		p=p->next;
 	}
 	if (p==NULL)
-		printf("  提示:指定的联系人记录不存在！\n");
+		printf(">>指定的联系人记录不存在！\n");
 	else
 	{
 		pre->next=p->next;
 		free(p);
-		printf("  提示:删除成功！\n");
+		printf(">>删除成功！\n");
 	}
 }
 void Sortno(EmpList *&L)	//采用直接插入法单链表L按学号递增有序排序
@@ -205,14 +208,14 @@ long int DispEmp(EmpList *L)	//输出所有联系人记录
 		printf("  提示:没有任何联系人记录！\n");
 	else
 	{
-		printf("    学号\t姓名\t  班级\t电话\t\t地址\t\t邮箱\n");
-		printf("   -------------------------------------------------------------------------------\n");
+		printf("\t\t学号\t\t姓名\t\t班级\t电话\t\t地址\t\t邮箱\n");
+		printf("\t\t----------------------------------------------------------------------------------------------\n");
 		while (p!=NULL)
 		{
-			printf("  %d\t%-10s%d  %ld\t%-s\t%-s\n",p->data.num,p->data.name,p->data.classes,p->data.phone,p->data.address,p->data.code);
+			printf("\t\t%d\t%-10s\t%d\t%ld\t%-s\t%-s\n",p->data.num,p->data.name,p->data.classes,p->data.phone,p->data.address,p->data.code);
 			p=p->next; 
 		}
-		printf("   -------------------------------------------------------------------------------\n");
+		printf("\t\t----------------------------------------------------------------------------------------------\n");
 	}
 }
 
@@ -385,7 +388,8 @@ int KMPIndex1(SqString s,SqString t)	//修正的KMP算法
 int KMP(EmpList *L,char *T)
 {
     // <1>定义声明
-	cout<<endl;
+	cout<<"您可能想找以下联系人："<<endl;
+	printf("\t\t学号\t\t姓名\t\t班级\t电话\t\t地址\t\t邮箱\n");
 	int j;
 	char S[MaxSize];
 	int next[MaxSize],nextval[MaxSize];
@@ -406,11 +410,12 @@ int KMP(EmpList *L,char *T)
 		{
 		    if(p->data.phone==DispStr(s))
 		    {
-			    printf("  %d\t%-10s%d  %ld\t%-s\t%-s\n",p->data.num,p->data.name,p->data.classes,p->data.phone,p->data.address,p->data.code);
+			    printf("\t\t%d\t%-10s\t%d\t%ld\t%-s\t%-s\n",p->data.num,p->data.name,p->data.classes,p->data.phone,p->data.address,p->data.code);
 		    }
 		}
 		p=p->next;
 	}
+	cout<<"(PS:如果没有显示任何个人信息，则无法匹配到相似的手机号，请您再回忆手机号.)"<<endl;
 }
 // 以上属半记忆查找
 
@@ -464,7 +469,7 @@ int main()
 	do
 	{	
 		printf("[---------------------\n");
-		printf("\t1:添加记录\n\t2:显示记录\n\t3:排序记录\n\t4:删除记录\n\t5:清空记录\n\t6:查找记录\n\t7:修改记录\n\t8:半记忆查找\n\t0:保存并退出\n");
+		printf("\t1:添加记录\n\t2:显示记录\n\t3:排序记录\n\t4:删除记录\n\t5:清空记录\n\t6:查找记录\n\t7:修改记录\n\t8:弱记忆查找\n\t0:保存并退出\n");
 		printf("----------------------]\n请选择:");
 		scanf("%d",&sel);
 		switch(sel)
@@ -476,12 +481,12 @@ int main()
 			DispEmp(L);
 			break;
 		case 3:
-		do
-		{
-			cout<<"有以下排序方式"<<endl<<"         9.按学号排序    10.按班级排序    11.按电话排序    12.按姓名排序(a~z)"<<endl<<"请选择：";
+		    do
+		    {
+			cout<<"有以下排序方式"<<endl<<"         9.按学号排序    10.按班级排序    11.按电话排序    12.按姓名排序(a~z)(函数有误，需更改)"<<endl<<"请选择：";
 			scanf("%d",&sle);
 			switch(sle)
-			{
+			   {
 				case 9:
 			    Sortno(L);
 				DispEmp(L);
@@ -498,9 +503,12 @@ int main()
 				sortList(L);
 				printList(L);
 				break;
-			}
-		}while(0);
-		break;
+				default:
+		        cout<<">>输入有误，请重新输入."<<endl;
+			    break;
+			   }
+		    }while(0);
+		    break;
 		case 4:
 			DelEmp(L);
 			break;
@@ -516,10 +524,12 @@ int main()
 		case 8:
 			char T[MaxSize];
             int num;
-            cout<<"请输入半记忆电话：";
+            cout<<"请输入您记住的电话号码：";
             cin>>T;
-			cout<<"您可能想找以下联系人：";
             KMP(L,T);
+			break;
+		default:
+		    cout<<">>输入有误，请重新输入."<<endl;
 			break;
 		}
 	} while (sel!=0);
