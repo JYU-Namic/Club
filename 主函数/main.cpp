@@ -41,14 +41,14 @@ void DelAll(EmpList *&L)		//删除联系人文件中全部记录
 	FILE *fp;
 	if ((fp=fopen("emp.dat","wb"))==NULL)	//重写清空emp.dat文件
 	{	
-		printf("  提示:不能打开联系人文件\n");
+		printf(">>不能打开联系人文件\n");
 		return;
 	}
 	fclose(fp);
 	DestroyEmp(L);						//释放联系人单链表L
 	L=(EmpList *)malloc(sizeof(EmpList));	
 	L->next=NULL;						//建立一个空的联系人单链表L
-	printf("  提示:联系人记录清除完毕\n");
+	printf(">>联系人记录清除完毕\n");
 }
 void ReadFile(EmpList *&L)		//读emp.dat文件建立联系人单键表L
 {
@@ -61,7 +61,7 @@ void ReadFile(EmpList *&L)		//读emp.dat文件建立联系人单键表L
 	if ((fp=fopen("emp.dat","rb"))==NULL) //不存在emp.dat文件
 	{	
 		 if ((fp=fopen("emp.dat","wb"))==NULL) 
-			 printf("  提示:不能创建emp.dat文件\n");
+			 printf(">>不能创建emp.dat文件\n");
 	}
 	else		//若存在emp.dat文件
 	{
@@ -75,7 +75,7 @@ void ReadFile(EmpList *&L)		//读emp.dat文件建立联系人单键表L
 		}
 	}
 	r->next=NULL;
-	printf("  提示:联系人单键表L建立完毕,有%d个记录\n",n);
+	printf(">>联系人单键表L建立完毕,有%d个记录\n",n);
 	fclose(fp);
 }
 void SaveFile(EmpList *L)	//将联系人单链表数据存入数据文件
@@ -85,7 +85,7 @@ void SaveFile(EmpList *L)	//将联系人单链表数据存入数据文件
 	FILE *fp;
 	if ((fp=fopen("emp.dat","wb"))==NULL) 
 	{	
-		printf("  提示:不能创建文件emp.dat\n");
+		printf(">>不能创建文件emp.dat\n");
 		return;
 	}
 	while (p!=NULL)
@@ -97,9 +97,9 @@ void SaveFile(EmpList *L)	//将联系人单链表数据存入数据文件
 	fclose(fp);
 	DestroyEmp(L);				//释放联系人单链表L
 	if (n>0)
-		printf("  提示:%d个联系人记录写入emp.dat文件\n",n);
+		printf(">>%d个联系人记录写入emp.dat文件\n",n);
 	else
-		printf("  提示:没有任何联系人记录写入emp.dat文件!\n");
+		printf(">>没有任何联系人记录写入emp.dat文件!\n");
 }
 void InputEmp(EmpList *&L)	//添加一个联系人记录
 {
@@ -156,7 +156,7 @@ void Sortno(EmpList *&L)	//采用直接插入法单链表L按学号递增有序�
 			p=q;
 		}
 	}
-	printf("  提示:按学号递增排序完毕！\n");
+	printf(">>按学号递增排序完毕.\n");
 }
 void Sortdepno(EmpList *&L) //采用直接插入法单链表L按班级递增有序排序
 {
@@ -176,7 +176,7 @@ void Sortdepno(EmpList *&L) //采用直接插入法单链表L按班级递增有�
 			p=q;
 		}
 	}
-	printf("  提示:按班级递增排序完毕\n");
+	printf(">>按班级递增排序完毕.\n");
 }
 void Sortsalary(EmpList *&L) //采用直接插入法单链表L按电话递增有序排序
 {
@@ -196,7 +196,7 @@ void Sortsalary(EmpList *&L) //采用直接插入法单链表L按电话递增有
 			p=q;
 		}
 	}
-	printf("  提示:按电话递增排序完毕\n");
+	printf(">>按电话递增排序完毕.\n");
 }
 long int DispEmp(EmpList *L)	//输出所有联系人记录
 {
@@ -265,9 +265,48 @@ void Find(EmpList *&L)     //查找记录
     }
 }
 
-void Change(EmpList *&L)    //修改记录
+void modifyList(EmpList* head) //修改记录
 {
-
+    char name[10];
+    cout << "请输入要修改的联系人姓名:";
+    cin >> name;
+    EmpList* p = head;
+    while (p != nullptr) {
+        if (strcmp(p->data.name, name) == 0) 
+		{
+            cout << "找到联系人:" << p->data.name << endl;
+            cout << "有以下信息可供修改:" << endl;
+            cout << "     1. 电话号码" << endl;
+            cout << "     2. 地址" << endl;
+            cout << "     3. 邮箱" << endl;
+            cout << "     4. 学号" << endl;
+			cout<<"请选择：";
+            int choice;
+            cin >> choice;
+            switch (choice) {
+                case 1: 
+                    cout << "请输入新的电话号码:";
+                    cin >> p->data.phone;
+                    break;
+                case 2:
+                    cout << "请输入新的地址:";
+                    cin >> p->data.address;
+                    break;
+                case 3:
+                    cout << "请输入新的邮箱:";
+                    cin >> p->data.code;
+                    break;
+				case 4:
+                    cout << "请输入新的学号:";
+                    cin >> p->data.num;
+                    break;
+            }
+            cout << ">>修改成功." << endl;
+            return;
+        }
+        p = p->next;
+    }
+    cout << "未找到该联系人!" << endl;
 }
 
 //半记忆查找
@@ -373,26 +412,63 @@ int KMP(EmpList *L,char *T)
 		p=p->next;
 	}
 }
-
-
 // 以上属半记忆查找
+
+void swap(char* a, char* b) 
+{ 
+    char temp[10];
+    strcpy(temp, a);
+    strcpy(a, b);
+    strcpy(b, temp);
+}
+
+void sortList(EmpList* head) 
+{
+    if (head == nullptr || head->next == nullptr) return;
+    EmpList* p = head;
+    EmpList* q = head->next;
+    while (p != nullptr && q != nullptr) 
+	{
+        if (strcmp(p->data.name, q->data.name) > 0) 
+		{
+            swap(p->data.name, q->data.name);
+        } 
+        p = p->next;
+        q = q->next;
+    }
+    sortList(head->next);  
+}
+
+void printList(EmpList* head) 
+{
+    EmpList* p = head->next;
+	printf(">>按姓名排序完毕.\n");
+	printf("    学号\t姓名\t  班级\t电话\t\t地址\t\t邮箱\n");
+    while (p != nullptr) 
+	{
+        printf("  %d\t%-10s%d    %ld    %-s   %-s\n", 
+                p->data.num, p->data.name, p->data.classes, 
+                p->data.phone, p->data.address, p->data.code);
+        p = p->next;
+    }
+}
+
+
 int main()
 {
 	EmpList *L;
-	int sel;
+	EmpList* head = nullptr;  // 链表头节点
+	int sel,sle;
 	printf("由emp.dat文件建立联系人单键表L\n");
 	ReadFile(L);
 	do
 	{	
 		printf("[---------------------\n");
-		printf("\t1:添加记录\n\t2:显示记录\n\t3:按职学号排序\n\t4:按班级排序\n\t5:按电话排序\n\t6:删除记录\n\t9:清空记录\n\t10:查找记录\n\t11:修改记录(还没有函数)\n\t12:半记忆查找\n\t0:保存并退出\n");
+		printf("\t1:添加记录\n\t2:显示记录\n\t3:排序记录\n\t4:删除记录\n\t5:清空记录\n\t6:查找记录\n\t7:修改记录\n\t8:半记忆查找\n\t0:保存并退出\n");
 		printf("----------------------]\n请选择:");
 		scanf("%d",&sel);
 		switch(sel)
 		{
-		case 9:
-			DelAll(L);
-			break;
 		case 1:
 			InputEmp(L);
 			break;
@@ -400,24 +476,44 @@ int main()
 			DispEmp(L);
 			break;
 		case 3:
-			Sortno(L);
-			break;
+		do
+		{
+			cout<<"有以下排序方式"<<endl<<"         9.按学号排序    10.按班级排序    11.按电话排序    12.按姓名排序(a~z)"<<endl<<"请选择：";
+			scanf("%d",&sle);
+			switch(sle)
+			{
+				case 9:
+			    Sortno(L);
+				DispEmp(L);
+			    break;
+		        case 10:
+			    Sortdepno(L);
+				DispEmp(L);
+			    break;
+		        case 11:
+			    Sortsalary(L);
+				DispEmp(L);
+		    	break;
+				case 12:
+				sortList(L);
+				printList(L);
+				break;
+			}
+		}while(0);
+		break;
 		case 4:
-			Sortdepno(L);
-			break;
-		case 5:
-			Sortsalary(L);
-			break;
-		case 6:
 			DelEmp(L);
 			break;
-		case 10:
+		case 5:
+			DelAll(L);
+			break;
+		case 6:
 			Find(L);
 			break;
-		case 11:
-			Change(L);
+		case 7:
+			modifyList(L);
 			break;
-		case 12:
+		case 8:
 			char T[MaxSize];
             int num;
             cout<<"请输入半记忆电话：";

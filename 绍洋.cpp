@@ -265,9 +265,48 @@ void Find(EmpList *&L)     //查找记录
     }
 }
 
-void Change(EmpList *&L)    //修改记录
+void modifyList(EmpList* head) //修改记录
 {
-
+    char name[10];
+    cout << "请输入要修改的联系人姓名:";
+    cin >> name;
+    EmpList* p = head;
+    while (p != nullptr) {
+        if (strcmp(p->data.name, name) == 0) 
+		{
+            cout << "找到联系人:" << p->data.name << endl;
+            cout << "有以下信息可供修改:" << endl;
+            cout << "     1. 电话号码" << endl;
+            cout << "     2. 地址" << endl;
+            cout << "     3. 邮箱" << endl;
+            cout << "     4. 学号" << endl;
+			cout<<"请选择：";
+            int choice;
+            cin >> choice;
+            switch (choice) {
+                case 1: 
+                    cout << "请输入新的电话号码:";
+                    cin >> p->data.phone;
+                    break;
+                case 2:
+                    cout << "请输入新的地址:";
+                    cin >> p->data.address;
+                    break;
+                case 3:
+                    cout << "请输入新的邮箱:";
+                    cin >> p->data.code;
+                    break;
+				case 4:
+                    cout << "请输入新的学号:";
+                    cin >> p->data.num;
+                    break;
+            }
+            cout << ">>修改成功." << endl;
+            return;
+        }
+        p = p->next;
+    }
+    cout << "未找到该联系人!" << endl;
 }
 
 //半记忆查找
@@ -425,14 +464,11 @@ int main()
 	do
 	{	
 		printf("[---------------------\n");
-		printf("\t1:添加记录\n\t2:显示记录\n\t3:排序记录\n\t6:删除记录\n\t9:清空记录\n\t10:查找记录\n\t11:修改记录(还没有函数)\n\t12:半记忆查找\n\t0:保存并退出\n");
+		printf("\t1:添加记录\n\t2:显示记录\n\t3:排序记录\n\t4:删除记录\n\t5:清空记录\n\t6:查找记录\n\t7:修改记录\n\t8:半记忆查找\n\t0:保存并退出\n");
 		printf("----------------------]\n请选择:");
 		scanf("%d",&sel);
 		switch(sel)
 		{
-		case 9:
-			DelAll(L);
-			break;
 		case 1:
 			InputEmp(L);
 			break;
@@ -442,39 +478,42 @@ int main()
 		case 3:
 		do
 		{
-			cout<<"有以下排序方式"<<endl<<"         13.按学号排序    14.按班级排序    15.按电话排序    16.按姓名排序(a~z)"<<endl<<"请选择：";
+			cout<<"有以下排序方式"<<endl<<"         9.按学号排序    10.按班级排序    11.按电话排序    12.按姓名排序(a~z)"<<endl<<"请选择：";
 			scanf("%d",&sle);
 			switch(sle)
 			{
-				case 13:
+				case 9:
 			    Sortno(L);
 				DispEmp(L);
 			    break;
-		        case 14:
+		        case 10:
 			    Sortdepno(L);
 				DispEmp(L);
 			    break;
-		        case 15:
+		        case 11:
 			    Sortsalary(L);
 				DispEmp(L);
 		    	break;
-				case 16:
+				case 12:
 				sortList(L);
 				printList(L);
 				break;
 			}
 		}while(0);
 		break;
-		case 6:
+		case 4:
 			DelEmp(L);
 			break;
-		case 10:
+		case 5:
+			DelAll(L);
+			break;
+		case 6:
 			Find(L);
 			break;
-		case 11:
-			Change(L);
+		case 7:
+			modifyList(L);
 			break;
-		case 12:
+		case 8:
 			char T[MaxSize];
             int num;
             cout<<"请输入半记忆电话：";
