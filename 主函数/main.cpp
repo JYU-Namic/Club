@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <malloc.h>
+#include<iostream>
+#include<cstdio>
+#include <string.h>
+#define MaxSize 20
+using namespace std;
 typedef struct
 {
 	int num;						//学号
@@ -14,6 +19,12 @@ typedef struct node
 	EmpType data;				//存放通讯信息
 	struct node *next;			//指向下一个结点的指针
 }  EmpList;						//联系人结点类型
+typedef struct
+{	
+	char data[MaxSize];		//串中字符
+	int length;				//串长
+} SqString;					//声明顺序串类型
+
 void DestroyEmp(EmpList *&L)	//释放联系人单链表L
 {
 	EmpList *pre=L,*p=pre->next;
@@ -187,7 +198,7 @@ void Sortsalary(EmpList *&L) //采用直接插入法单链表L按电话递增有
 	}
 	printf("  提示:按电话递增排序完毕\n");
 }
-void DispEmp(EmpList *L)	//输出所有联系人记录
+long int DispEmp(EmpList *L)	//输出所有联系人记录
 {
 	EmpList *p=L->next;
 	if (p==NULL)
@@ -208,7 +219,50 @@ void DispEmp(EmpList *L)	//输出所有联系人记录
 //需添加函数
 void Find(EmpList *&L)     //查找记录
 {
-
+	
+    EmpList *pre=L,*p1=L->next;
+    printf("请输入你要查找的方式，1按学号查找，2按姓名查找。输入-1返回\n");
+    int bb;
+    scanf("%d",&bb);
+    if(bb==-1) return;
+    else if(bb==1)
+    {
+        long int num;
+        printf("  >>输入需要查找的学生号:");
+        scanf("%ld",&num);
+        while (p1!=NULL&&p1->data.num!=num)
+        {
+           pre=p1;
+           p1=p1->next;
+        }
+        if (p1==NULL)
+        {
+            printf("该学生不存在");
+            return;
+        }
+        else
+        printf("%ld\t%-10s%d  %ld\t%-s\t%-s\n",p1->data.num,p1->data.name,p1->data.classes,p1->data.phone,p1->data.address,p1->data.code);
+        return;
+    }
+    else if (bb==2);
+    {
+      char name[10];
+      printf("请输入要查找学生的名字\n");
+      scanf("%s",&name);
+      while (p1!=NULL&&strcmp(p1->data.name,name)!=0)
+      {
+        pre=p1;
+        p1=p1->next;
+      }
+      if (p1==NULL)
+      {
+        printf("未查找到该学生");
+        return;
+      }
+      else
+      printf("%ld\t%-10s%d  %ld\t%-s\t%-s\n",p1->data.num,p1->data.name,p1->data.classes,p1->data.phone,p1->data.address,p1->data.code);
+      return;
+    }
 }
 
 void Change(EmpList *&L)    //修改记录
@@ -216,12 +270,112 @@ void Change(EmpList *&L)    //修改记录
 
 }
 
-//需添加函数
-void KMP(EmpList *L)        //半记忆查找
+//半记忆查找
+void StrAssign(SqString &s,char cstr[])	//字符串常量赋给串s
 {
-
+	int i;
+	for (i=0;cstr[i]!='\0';i++)
+		s.data[i]=cstr[i];
+	s.length=i;
 }
 
+
+long int DispStr(SqString s)    //返回串s的值 
+{
+    long int value = 0;
+    if (s.length>0)
+    {    
+        for (int i=0;i<s.length;i++)
+        {
+            value = value*10 + s.data[i] - '0';  //计算字符串对应的整数值
+        }
+    }
+    return value;  //返回整数值
+}
+
+
+void GetNext(SqString t,int next[])	//由模式串t求出next值
+{	int j,k;
+	j=0;k=-1;next[0]=-1;
+	while (j<t.length-1)
+	{	if (k==-1 || t.data[j]==t.data[k]) 	//k为-1或比较的字符相等时
+		{	j++;k++;
+			next[j]=k;
+		}
+		else  k=next[k];
+	}
+}
+
+void GetNextval(SqString t,int nextval[])  //由模式串t求出nextval值
+{
+	int j=0,k=-1;
+	nextval[0]=-1;
+	while (j<t.length)
+	{	if (k==-1 || t.data[j]==t.data[k])
+		{	j++;k++;
+			if (t.data[j]!=t.data[k])
+				nextval[j]=k;
+			else
+				nextval[j]=nextval[k];
+		}
+		else
+			k=nextval[k];
+	}
+}
+
+
+int KMPIndex1(SqString s,SqString t)	//修正的KMP算法
+{
+	int nextval[MaxSize],i=0,j=0;
+	GetNextval(t,nextval);
+	while (i<s.length && j<t.length) 
+	{	if (j==-1 || s.data[i]==t.data[j]) 
+		{	i++;
+			j++;
+		}
+		else
+			j=nextval[j];
+	}
+	if (j>=t.length)
+		return(i-t.length);
+	else
+		return(-1);
+}
+
+
+int KMP(EmpList *L,char *T)
+{
+    // <1>定义声明
+	cout<<endl;
+	int j;
+	char S[MaxSize];
+	int next[MaxSize],nextval[MaxSize];
+	SqString s,t;
+    // <2>T输入
+	StrAssign(t,T);
+	// <3>S输入
+    EmpList *p=L->next;
+	while (p!=NULL)
+	{
+        sprintf(S,"%ld",p->data.phone);
+	    StrAssign(s,S);
+	    // <5>求nextval
+	    GetNext(t,next);			//由模式串t求出next值
+	    GetNextval(t,nextval);		//由模式串t求出nextval值
+	    // <6>输出结果
+		if(KMPIndex1(s,t)!=-1)
+		{
+		    if(p->data.phone==DispStr(s))
+		    {
+			    printf("  %d\t%-10s%d  %ld\t%-s\t%-s\n",p->data.num,p->data.name,p->data.classes,p->data.phone,p->data.address,p->data.code);
+		    }
+		}
+		p=p->next;
+	}
+}
+
+
+// 以上属半记忆查找
 int main()
 {
 	EmpList *L;
@@ -231,7 +385,7 @@ int main()
 	do
 	{	
 		printf("[---------------------\n");
-		printf("\t1:添加记录\n\t2:显示记录\n\t3:按职学号排序\n\t4:按班级排序\n\t5:按电话排序\n\t6:删除记录\n\t9:清空记录\n\t10:查找记录(还没有函数)\n\t11:修改记录(还没有函数)\n\t12:半记忆查找\n\t0:保存并退出\n");
+		printf("\t1:添加记录\n\t2:显示记录\n\t3:按职学号排序\n\t4:按班级排序\n\t5:按电话排序\n\t6:删除记录\n\t9:清空记录\n\t10:查找记录\n\t11:修改记录(还没有函数)\n\t12:半记忆查找\n\t0:保存并退出\n");
 		printf("----------------------]\n请选择:");
 		scanf("%d",&sel);
 		switch(sel)
@@ -264,7 +418,12 @@ int main()
 			Change(L);
 			break;
 		case 12:
-			KMP(L);
+			char T[MaxSize];
+            int num;
+            cout<<"请输入半记忆电话：";
+            cin>>T;
+			cout<<"您可能想找以下联系人：";
+            KMP(L,T);
 			break;
 		}
 	} while (sel!=0);
