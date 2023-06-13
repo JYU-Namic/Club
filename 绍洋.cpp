@@ -297,6 +297,7 @@ int KMPIndex1(SqString s,SqString t)	//修正的KMP算法
 void KMP(EmpList *L,char *T)
 {
     // <1>定义声明
+	cout<<endl;
 	int j;
 	char S[MaxSize];
 	int next[MaxSize],nextval[MaxSize];
@@ -309,18 +310,14 @@ void KMP(EmpList *L,char *T)
 	{
         sprintf(S,"%ld",p->data.phone);
 	    StrAssign(s,S);
-        // <4>打印S，T串
-	    printf("\n串s:");DispStr(s);
-	    printf("串t:");DispStr(t);
 	    // <5>求nextval
 	    GetNext(t,next);			//由模式串t求出next值
 	    GetNextval(t,nextval);		//由模式串t求出nextval值
 	    // <6>输出结果
-	    printf("\n改进的KMP算法:\n");
-	    printf("t在s中的位置=%d\n",KMPIndex1(s,t));
+		if(KMPIndex1(s,t)!=-1)
+		    DispStr(s);
         p=p->next;
 	}
-	
 }
 // 以上属半记忆查找
 
@@ -371,6 +368,7 @@ int main()
             int num;
             cout<<"请输入半记忆电话：";
             cin>>T;
+			cout<<"您可能想找以下联系人：";
             KMP(L,T);
 			break;
 		}
