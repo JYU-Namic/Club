@@ -419,30 +419,30 @@ int KMP(EmpList *L,char *T)
 }
 // 以上属半记忆查找
 
-void swap(char* a, char* b) 
-{ 
-    char temp[10];
-    strcpy(temp, a);
-    strcpy(a, b);
-    strcpy(b, temp);
-}
+// void swap(char* a, char* b) 
+// { 
+//     char temp[10];
+//     strcpy(temp, a);
+//     strcpy(a, b);
+//     strcpy(b, temp);
+// }
 
-void sortList(EmpList* head) 
-{
-    if (head == nullptr || head->next == nullptr) return;
-    EmpList* p = head;
-    EmpList* q = head->next;
-    while (p != nullptr && q != nullptr) 
-	{
-        if (strcmp(p->data.name, q->data.name) > 0) 
-		{
-            swap(p->data.name, q->data.name);
-        } 
-        p = p->next;
-        q = q->next;
-    }
-    sortList(head->next);  
-}
+// void sortList(EmpList* head) 
+// {
+//     if (head == nullptr || head->next == nullptr) return;
+//     EmpList* p = head;
+//     EmpList* q = head->next;
+//     while (p != nullptr && q != nullptr) 
+// 	{
+//         if (strcmp(p->data.name, q->data.name) > 0) 
+// 		{
+//             swap(p->data.name, q->data.name);
+//         } 
+//         p = p->next;
+//         q = q->next;
+//     }
+//     sortList(head->next);  
+// }
 
 void printList(EmpList* head) 
 {
@@ -483,7 +483,7 @@ int main()
 		case 3:
 		    do
 		    {
-			cout<<"有以下排序方式"<<endl<<"         9.按学号排序    10.按班级排序    11.按电话排序    12.按姓名排序(a~z)(函数有误，需更改)"<<endl<<"请选择：";
+			cout<<"有以下排序方式"<<endl<<"         9.按学号排序    10.按班级排序    11.按电话排序   "<<endl<<"请选择：";
 			scanf("%d",&sle);
 			switch(sle)
 			   {
@@ -499,10 +499,6 @@ int main()
 			    Sortsalary(L);
 				DispEmp(L);
 		    	break;
-				case 12:
-				sortList(L);
-				printList(L);
-				break;
 				default:
 		        cout<<">>输入有误，请重新输入."<<endl;
 			    break;
