@@ -4,6 +4,9 @@
 #include<cstdio>
 #include <string.h>
 #define MaxSize 20
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdlib.h>
+#include <string.h>
 using namespace std;
 typedef struct
 {
@@ -419,30 +422,7 @@ int KMP(EmpList *L,char *T)
 }
 // 以上属半记忆查找
 
-// void swap(char* a, char* b) 
-// { 
-//     char temp[10];
-//     strcpy(temp, a);
-//     strcpy(a, b);
-//     strcpy(b, temp);
-// }
 
-// void sortList(EmpList* head) 
-// {
-//     if (head == nullptr || head->next == nullptr) return;
-//     EmpList* p = head;
-//     EmpList* q = head->next;
-//     while (p != nullptr && q != nullptr) 
-// 	{
-//         if (strcmp(p->data.name, q->data.name) > 0) 
-// 		{
-//             swap(p->data.name, q->data.name);
-//         } 
-//         p = p->next;
-//         q = q->next;
-//     }
-//     sortList(head->next);  
-// }
 
 void printList(EmpList* head) 
 {
@@ -458,10 +438,165 @@ void printList(EmpList* head)
     }
 }
 
+//批量查找功能
+void lotoffind(EmpList *L)
+{
+	  EmpList *pre=L,*p1=L->next;
+    printf("请输入批量查找的班级\n");
+    
+	
+}
+
+//登录功能 
+
+
+typedef struct userdata {
+	char user_username[20];
+	char user_password[8];
+}user;
+
+void Get_NP(user* u);
+void Login(user* u);
+void Fillout(user* u);
+int UserdataFile_read(user* u);
+void UserdataFile_write(user* u);
+
+
+
+void Get_NP(user* u)
+{
+	int i = 0, j = 0;
+	
+	printf("输入用户名:");
+	while ((u->user_username[i] = getchar()) != '\n')
+	{
+		i++;
+	}
+	u->user_username[i] = '\0';
+
+	printf("输入密码:");
+	while ((u->user_password[j] = getchar()) != '\n')
+	{
+		j++;
+	}
+	u->user_password[j] = '\0';
+}
+
+void Login(user* u)
+{
+	Get_NP(u);
+	if (UserdataFile_read(u))
+	{
+		printf("登录成功!\n");
+	}
+	else
+	{
+		printf("登录失败!");
+		exit (0); 
+	}
+}
+
+void Fillout(user* u)
+{
+	Get_NP(u);
+	UserdataFile_write(u);
+	if (UserdataFile_read(u))
+	{
+		printf("注册成功!\n");
+	}
+	else
+	{
+		printf("注册失败!");
+	}
+}
+
+int UserdataFile_read(user* u)
+{
+	FILE* fp;
+	char read_result[30];
+	int check = 0;
+
+	char protem_userdata[30];
+	char protem_username[20];
+	char protem_password[8];
+
+	strcpy(protem_username, u->user_username);
+	strcpy(protem_password, u->user_password);
+	strcpy(protem_userdata, protem_username);
+
+	strcat(protem_userdata, " ");
+	strcat(protem_userdata, protem_password);
+	strcat(protem_userdata, "\n");
+
+	if ((fp = fopen("user_database.txt", "r")) == NULL)
+	{
+		printf("UserdataFile open error!\n");
+		exit(0);
+	}
+	while (!feof(fp))
+	{
+		fgets(read_result, 30, fp);
+		if (strcmp(read_result, protem_userdata) == 0)
+		{
+			check = 1;
+			break;
+		}
+	}
+	if (fclose(fp))
+	{
+		printf("UserdataFile close error!");
+	}
+	return check;
+}
+
+void UserdataFile_write(user* u)
+{
+	FILE* fp;
+
+	char protem_userdata[30];
+	char protem_username[20];
+	char protem_password[8];
+
+	strcpy(protem_username, u->user_username);
+	strcpy(protem_password, u->user_password);
+	strcpy(protem_userdata, protem_username);
+
+	strcat(protem_userdata, " ");
+	strcat(protem_userdata, protem_password);
+	strcat(protem_userdata, "\n");
+
+	if ((fp = fopen("user_database.txt", "a")) == NULL)
+	{
+		printf("UserdataFile open error!\n");
+		exit(0);
+	}
+	
+	fputs(protem_userdata, fp);
+
+	if (fclose(fp))
+	{
+		printf("UserdataFile close error!");
+		exit(0);
+	}
+}
 
 int main()
 {
-	EmpList *L;
+		user* u = (user*)malloc(sizeof(struct userdata));
+	char choice[10];
+	int i = 0;
+
+	printf("输入 登录或者注册:");
+	while ((choice[i] = getchar()) != '\n')
+	{
+		i++;
+	}
+	choice[i] = '\0';
+
+	if (!strcmp("登录", choice))
+	{
+		Login(u);
+		EmpList *L;
 	EmpList* head = nullptr;  // 链表头节点
 	int sel,sle;
 	printf("由emp.dat文件建立联系人单键表L\n");
@@ -524,6 +659,9 @@ int main()
             cin>>T;
             KMP(L,T);
 			break;
+		case 12:
+			lotoffind(L);
+			break;
 		default:
 		    cout<<">>输入有误，请重新输入."<<endl;
 			break;
@@ -531,4 +669,15 @@ int main()
 	} while (sel!=0);
 	SaveFile(L);
 	return 1;
+	}
+	else if (!strcmp("注册", choice))
+	{
+		Fillout(u);
+		main();
+	}
+	else
+	{
+		printf("Error!\n");
+	}
+	return 0;
 }
