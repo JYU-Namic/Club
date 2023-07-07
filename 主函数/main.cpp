@@ -115,10 +115,22 @@ void InputEmp(EmpList *&L)	//添加一个联系人记录
 	EmpList *s,*pre=L;
 	printf(">>输入学号(-1返回, 0代表没有学号):");
 	int A;
-	cin>>A;
+	scanf("%d",&A);
 	if(A==-1)   return;
 	if(A==0)   p.num=888888888;    //888888888是为了格式好看:）
-	else p.num=A;
+	else
+	{
+	while (pre!=NULL)
+	{
+		if(pre->data.num==A)
+		{
+			printf("错误！学号重复");
+			return;
+		}
+		pre=pre->next;
+	}
+	L->data.num=A;
+	}
 	printf(">>输入姓名 班级 电话 地址 邮箱(输入完毕摁ENTER回车):\n");
 	scanf("%s%d%ld%s%s",&p.name,&p.classes,&p.phone,&p.address,&p.code);
 	s=(EmpList *)malloc(sizeof(EmpList));
