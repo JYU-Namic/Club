@@ -7,6 +7,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 #include <string.h>
+#include <termios.h>
+#include <unistd.h>
+#include <assert.h>
 using namespace std;
 typedef struct
 {
@@ -53,6 +56,7 @@ void DelAll(EmpList *&L)		//删除联系人文件中全部记录
 	L->next=NULL;						//建立一个空的联系人单链表L
 	printf(">>联系人记录清除完毕\n");
 }
+
 void ReadFile(EmpList *&L)		//读emp.dat文件建立联系人单键表L
 {
 	FILE *fp;
@@ -81,6 +85,7 @@ void ReadFile(EmpList *&L)		//读emp.dat文件建立联系人单键表L
 	printf(">>联系人单键表L建立完毕,有%d个记录\n",n);
 	fclose(fp);
 }
+
 void SaveFile(EmpList *L)	//将联系人单链表数据存入数据文件
 {
 	EmpList *p=L->next;
@@ -107,12 +112,12 @@ void SaveFile(EmpList *L)	//将联系人单链表数据存入数据文件
 void InputEmp(EmpList *&L)	//添加一个联系人记录
 {
 	EmpType p;
-	EmpList *s;
+	EmpList *s,*pre=L;
 	printf(">>输入学号(-1返回, 0代表没有学号):");
 	int A;
 	cin>>A;
 	if(A==-1)   return;
-	else if(A==0)   p.num=888888888;    //888888888是为了格式好看:）
+	if(A==0)   p.num=888888888;    //888888888是为了格式好看:）
 	else p.num=A;
 	printf(">>输入姓名 班级 电话 地址 邮箱(输入完毕摁ENTER回车):\n");
 	scanf("%s%d%ld%s%s",&p.name,&p.classes,&p.phone,&p.address,&p.code);
@@ -227,7 +232,7 @@ void Find(EmpList *&L)     //查找记录
 {
 	
     EmpList *pre=L,*p1=L->next;
-    printf("请输入你要查找的方式，1按学号查找，2按姓名查找。输入-1返回\n");
+    printf("请输入你要查找的方式    1.按学号查找    2.按姓名查找    12.按班级查找. (-1返回):\n");
     int bb;
     scanf("%d",&bb);
     if(bb==-1) return;
@@ -470,13 +475,31 @@ void Login(user* u);
 void Fillout(user* u);
 int UserdataFile_read(user* u);
 void UserdataFile_write(user* u);
+int getch(void);
 
 
+int getch(void)   
+{   
+        int c=0;   
+        struct termios org_opts, new_opts;   
+        int res=0;   
+        //-----  store old settings -----------   
+        res=tcgetattr(STDIN_FILENO, &org_opts);   
+        assert(res==0);   
+        //---- set new terminal parms --------   
+        memcpy(&new_opts, &org_opts, sizeof(new_opts));   
+        new_opts.c_lflag &= ~(ICANON | ECHO | ECHOE | ECHOK | ECHONL | ECHOPRT | ECHOKE | ICRNL);   
+        tcsetattr(STDIN_FILENO, TCSANOW, &new_opts);   
+        c=getchar();   
+            //------  restore old settings ---------   
+        res=tcsetattr(STDIN_FILENO, TCSANOW, &org_opts);assert(res==0);   
+        return c;   
+}  
 
 void Get_NP(user* u)
 {
 	int i = 0, j = 0;
-	
+	char c;
 	printf("输入用户名:");
 	while ((u->user_username[i] = getchar()) != '\n')
 	{
@@ -485,11 +508,18 @@ void Get_NP(user* u)
 	u->user_username[i] = '\0';
 
 	printf("输入密码:");
-	while ((u->user_password[j] = getchar()) != '\n')
+	while (1)
 	{
-		j++;
-	}
-	u->user_password[j] = '\0';
+		c=getch();
+		u->user_password[j++]=c;
+	    if(c=='\n')
+	    {
+	    	u->user_password[i] = '\0';
+	    	break;
+		}
+		putchar('*');
+}
+
 }
 
 void Login(user* u)
@@ -590,9 +620,23 @@ void UserdataFile_write(user* u)
 	}
 }
 
+int Sum(EmpList *L)
+{
+	int i,j=0;
+	printf("请输入你要统计的人数的班级");
+	scanf("%d",&i);
+	while(L!=NULL)
+	{
+	if(L->data.classes==i)
+	j++;
+	L=L->next;
+	 } 
+	 printf("该通讯录中该班级人数占%d人\n",j);
+}
+
 int main()
 {
-		user* u = (user*)malloc(sizeof(struct userdata));
+	user* u = (user*)malloc(sizeof(struct userdata));
 	char choice[10];
 	int i = 0;
 
@@ -610,13 +654,16 @@ int main()
 	EmpList* head = nullptr;  // 链表头节点
 	int sel,sle;
 	printf("由emp.dat文件建立联系人单键表L\n");
+	int n=0;
 	ReadFile(L);
 	do
 	{	
 		printf("[---------------------\n");
 		cout<<"\t1:添加记录\n\t4:删除记录\n\t6:查找记录\n\t7:修改记录"<<endl;
 		cout<<endl;
-		cout<<"\t5:清空记录\n\t3:排序记录\n\t2:显示记录\n\t8:模糊查找\n\t12:按班级查找\n\t0:保存并退出"<<endl;
+		cout<<"\t2:显示记录\n\t13.统计记录\n\t3:排序记录\n\t5:清空记录"<<endl;
+		cout<<endl;
+		cout<<"\t8:模糊查找\n\t0:保存并退出"<<endl;
 		printf("----------------------]\n请选择:");
 		scanf("%d",&sel);
 		switch(sel)
@@ -673,6 +720,9 @@ int main()
 			break;
 		case 12:
 			lotoffind(L);
+			break;
+		case 13:
+			Sum(L);
 			break;
 		default:
 		    cout<<">>输入有误，请重新输入."<<endl;
