@@ -445,11 +445,11 @@ void lotoffind(EmpList *L)
     printf("请输入批量查找的班级\n");
 	scanf("%d",&banji);
 	printf("您要查找的%d班级数据如下\n",banji);
-    while (L->next!=NULL)
+    while (L!=NULL)
 	{
 		if(L->data.classes==banji)
 		{
-			printf("%ld\t%-10s%d  %ld\t%-s\t%-s\n",L->data.num,L->data.name,L->data.classes,L->data.phone,L->data.address,L->data.code);
+			printf("%lld\t%-10s%d  %lld\t%-s\t%-s\n",L->data.num,L->data.name,L->data.classes,L->data.phone,L->data.address,L->data.code);
 			i++;
 		}
 		L=L->next;
@@ -457,7 +457,6 @@ void lotoffind(EmpList *L)
 	if(i==0)
 	printf("错误！没有该班级的数据\n");
 }
-
 //登录功能 
 
 
@@ -615,7 +614,7 @@ int main()
 	do
 	{	
 		printf("[---------------------\n");
-		printf("\t1:添加记录\n\t2:显示记录\n\t3:排序记录\n\t4:删除记录\n\t5:清空记录\n\t6:查找记录\n\t7:修改记录\n\t8:弱记忆查找\n\t12：按班级查找\n\t0:保存并退出\n");
+		printf("\t1:添加记录\n\t2:显示记录\n\t3:排序记录\n\t4:删除记录\n\t5:清空记录\n\t6:查找记录\n\t7:修改记录\n\t8:模糊查找\n\t12：按班级查找\n\t0:保存并退出\n");
 		printf("----------------------]\n请选择:");
 		scanf("%d",&sel);
 		switch(sel)
