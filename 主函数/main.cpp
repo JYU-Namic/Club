@@ -7,6 +7,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
 using namespace std;
 typedef struct
 {
@@ -476,7 +477,7 @@ void UserdataFile_write(user* u);
 void Get_NP(user* u)
 {
 	int i = 0, j = 0;
-	
+	char c;
 	printf("输入用户名:");
 	while ((u->user_username[i] = getchar()) != '\n')
 	{
@@ -485,11 +486,17 @@ void Get_NP(user* u)
 	u->user_username[i] = '\0';
 
 	printf("输入密码:");
-	while ((u->user_password[j] = getchar()) != '\n')
+	while (1)
 	{
-		j++;
-	}
-	u->user_password[j] = '\0';
+		c=getch();
+		u->user_password[j++]=c;
+	    if(c=='\r')
+	    {
+	    	u->user_password[i] = '\0';
+	    	break;
+		}
+		putchar('*');
+}
 }
 
 void Login(user* u)
@@ -614,7 +621,8 @@ int main()
 	do
 	{	
 		printf("[---------------------\n");
-		printf("\t1:添加记录\n\t2:显示记录\n\t3:排序记录\n\t4:删除记录\n\t5:清空记录\n\t6:查找记录\n\t7:修改记录\n\t8:模糊查找\n\t12：按班级查找\n\t0:保存并退出\n");
+		cout<<"基本功能:"<<endl;
+		printf("\t1:添加记录\n\t4:删除记录\n\t6:查找记录\n\t7:修改记录\n\t5:清空记录\n\t3:排序记录\n\t2:显示记录\n\t8:模糊查找\n\t12:按班级查找\n\t0:保存并退出\n");
 		printf("----------------------]\n请选择:");
 		scanf("%d",&sel);
 		switch(sel)
